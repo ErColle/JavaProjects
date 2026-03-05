@@ -1,0 +1,24 @@
+package Esercizi.corridoriThread;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Corridore c1 = new Corridore("gianni"); 
+		Thread t1 = new Thread(c1, c1.getNome());
+		
+		
+		Corridore c2 = new Corridore ("Epstein");
+		Thread t2 = new Thread(c1, c1.getNome());
+		
+		Corridore c3 = new Corridore("Lallalalala");
+		Thread t3 = new Thread(c3, c3.getNome());
+		
+		t1.start();
+		t2.start();
+		t3.start();
+
+	}
+
+}

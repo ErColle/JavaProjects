@@ -1,0 +1,24 @@
+package Projectjdbc.Projectjdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+    	final String URL="jbdc:postgresql://localhost:5432/postgres";
+    	final String USER="postgres";
+    	final String PSW="postgres";
+    	
+    	try {
+    		Connection con = DriverManager.getConnection(URL, USER, PSW);
+    		String insertSql="Insert into libro (titolo, autore, prezzo) values(?, ?, ?)";
+    	}catch(SQLException e) {
+    		System.out.println("Errore JDBC");
+    	}
+    	
+    	
+    }
+}

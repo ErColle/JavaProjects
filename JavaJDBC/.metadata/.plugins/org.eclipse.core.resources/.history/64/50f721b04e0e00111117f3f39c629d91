@@ -1,0 +1,39 @@
+package Projectjdbc.Projectjdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+    	// variabili con url user e psw del db 
+    	final String URL="jdbc:postgresql://localhost:5432/postgres";
+    	final String USER="postgres";
+    	final String PSW="postgres";
+    	
+    	try {
+    		// creo l'ogg che si connette al db 
+    		Connection conn = DriverManager.getConnection(URL, USER, PSW);
+    		// creo la query 
+    		String insertSql="Insert into libro (titolo, autore, prezzo) values(?, ?, ?)";
+    		
+    		try(PreparedStatement psInsert=conn.prepareStatement(insertSql)){
+    			psInsert.setString(1, "La bibbia");
+    			psInsert.setString(2, "Sconosciuto");
+    			psInsert.setString(3, "40");
+    			
+    			//esegue insert preparate nel preparateStatement
+    			int righe = psInsert.executeUpdate();
+    			System.out.println("Ho inserito " +righe+ " righe");
+    			
+    		}
+    	}catch(SQLException e) {
+    		System.out.println("Errore JDBC");
+    	}
+    	
+    	
+    }
+}

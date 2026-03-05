@@ -1,0 +1,17 @@
+package thread;
+
+public class Main {
+
+	public static void main(String[] args) {
+		System.out.println(Thread.currentThread().getName());
+		
+		Counter c1 = new Counter("culo", 63);
+		c1.start();
+		
+
+		Counter c2 = new Counter("ano", 63);
+		c2.start();
+		
+		System.out.println("Fine del lavoro del main");
+	}
+}

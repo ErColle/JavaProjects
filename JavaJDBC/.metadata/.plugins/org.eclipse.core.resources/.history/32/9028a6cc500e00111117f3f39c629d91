@@ -1,0 +1,64 @@
+package Projectjdbc.Projectjdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+    	// variabili con url user e psw del db 
+    	final String URL="jdbc:postgresql://localhost:5432/biblioteca";
+    	final String USER="postgres";
+    	final String PSW="postgres";
+    	
+    	try {
+    		// creo l'ogg che si connette al db 
+    		Connection conn = DriverManager.getConnection(URL, USER, PSW);
+    		// creo la variabile insert
+    		String insertSql="Insert into libro (titolo, autore, prezzo) values(?, ?, ?)";
+    		
+    		try(PreparedStatement psInsert=conn.prepareStatement(insertSql)){
+    			
+    			//richiamo la variabile insert
+    			psInsert.setString(1, "La bibbia");
+    			psInsert.setString(2, "Sconosciuto");
+    			psInsert.setDouble(3, 40.000);
+    			
+    			//esegue insert preparate nel preparateStatement
+    			int righe = psInsert.executeUpdate();
+    			System.out.println("Ho inserito " +righe+ " righe");
+    		}
+    		
+    		// variabile con SELECT
+    		String selectSql="Select id, titolo, autore, prezzo from libro";
+    		
+    		try(PreparedStatement psSelect = conn.prepareStatement(selectSql)){
+    			// salva il risultato della query nelloggetto ResultSet: res
+    			ResultSet rs = psSelect.executeQuery();
+    			
+    			System.out.println("-----LISTA LIBRI -----");
+    			
+    			//iteriamo per rs e salviamo le value delle chiavi 
+    			while(rs.next()) { // finche ce un prossimo elemento nella lista
+    				int id = rs.getInt("id");
+    				String titolo = rs.getString("titolo");
+    				String autore = rs.getString("autore");
+    				Double prezzo = rs.getDouble("prezzo");
+    				
+    				System.out.println(id+" - " + titolo + " - " + autore + " - " + prezzo );
+    			}
+    		}
+    		
+    		
+    	}catch(SQLException e) {
+    		//System.out.println("Errore JDBC");
+    		e.printStackTrace();
+    	}
+    	
+    	
+    }
+}

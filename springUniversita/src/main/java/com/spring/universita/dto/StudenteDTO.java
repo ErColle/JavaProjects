@@ -1,28 +1,47 @@
 package com.spring.universita.dto;
 
-import com.spring.universita.entity.Persona;
-
-public class StudenteDTO extends Persona {
-	private String matricola; // univoco
+public class StudenteDTO {
+	
+	private int matricola; // univoco
+	private String nome; 
+	private String cognome;
 	private String indirizzo;
-	private int annoNascita;
+	private int annoNascita; 
 	private int annoImmatricolazione;
-
-	public StudenteDTO(String nome, String cognome, String matricola, 
-			String indirizzo, int annoNascita, int annoImmatricolazione) {
-		super(nome, cognome);
+	
+	public StudenteDTO(int matricola, String nome, String cognome, String indirizzo, int annoNascita,
+			int annoImmatricolazione) {
+		super();
 		this.matricola = matricola;
+		this.nome = nome;
+		this.cognome = cognome;
 		this.indirizzo = indirizzo;
 		this.annoNascita = annoNascita;
 		this.annoImmatricolazione = annoImmatricolazione;
 	}
 
-	public String getMatricola() {
+	public int getMatricola() {
 		return matricola;
 	}
 
-	public void setMatricola(String matricola) {
+	public void setMatricola(int matricola) {
 		this.matricola = matricola;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
 	}
 
 	public String getIndirizzo() {

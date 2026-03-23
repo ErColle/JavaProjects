@@ -2,43 +2,45 @@ package com.spring.universita.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.spring.universita.entity.Professore;
-
+;
 public class ProfessoriDAO {
-	Map<Integer, Professore> mappa = new HashMap<Integer, Professore>();
 	
+	private Map<Integer, Professore> professori = new HashMap<Integer, Professore>();
 	
-	public boolean inserisciProfessore(Professore professore) {
-		if (mappa.containsKey(professore.getId())) {
+	// inserimento professore
+	public boolean inserisci(Professore professore) {
+		if (professori.containsKey(professore.getId())){
 			return false;
-		}	
-		mappa.put(professore.getId(), professore);
+		}
+		professori.put(professore.getId(), professore);
 		return true;
 	}
 	
+	// cerca professore per id
 	public Professore cercaPerId(int id) {
-		return mappa.get(id);
-	}
-
-	public List<Professore> visualizzaProfessori(){
-		return new ArrayList<Professore>(mappa.values());
+		return professori.get(id);
 	}
 	
-	public boolean cancella(int id) {
-		if (mappa.containsKey(id)) {
-			mappa.remove(id);
+	//visualizza tutti i professori 
+	public ArrayList<Professore> visualizzaProfessori(){
+		return new ArrayList<Professore>(professori.values());
+	}
+	
+	// cancella professore
+	public boolean cancella( int id ) {
+		if (professori.containsKey(id)) {
+			professori.remove(id);
 			return true;
 		}
 		return false;
-		
 	}
 	
 	public Professore modificaMateria(int id, String nuovaMateria) {
-		Professore professore = mappa.get(id);
-		professore.setMateriaInsegnamento(nuovaMateria);
-		return professore;
+		Professore professore = professori.get(id);
+		professore.setMateria(nuovaMateria);
+		return professore; 
 	}
 }

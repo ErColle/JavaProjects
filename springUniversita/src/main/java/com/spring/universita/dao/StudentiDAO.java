@@ -2,47 +2,49 @@ package com.spring.universita.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Repository;
 
 import com.spring.universita.entity.Studente;
 
+@Repository
 public class StudentiDAO {
-	Map<String, Studente> mappa = new HashMap<String, Studente>();
 	
-	// inserisci nuovo studente
+	Map<Integer, Studente> studenti = new HashMap<Integer, Studente>();
+	
+	// inserisci studenti
 	public boolean inserisciStudente(Studente studente) {
-		if (mappa.containsKey(studente.getMatricola())) {
+		if(studenti.containsKey(studente.getMatricola())) {
 			return false;
 		}
-		mappa.put(studente.getMatricola(), studente);
+		studenti.put(studente.getMatricola(), studente);
 		return true;
 	}
 	
 	// cerca studente per matricola
-	public Studente cercaPerMatricola(String matricola) {
-		return mappa.get(matricola);
+	public Studente cercaPerMatricola(int matricola) {
+		return studenti.get(matricola);
 	}
 	
 	// visualizza tutti gli studenti
-	public List<Studente> visualizzaStudenti(){
-		return new ArrayList<Studente>(mappa.values());
+	public ArrayList<Studente> visualizzaStudenti(){
+		return new ArrayList<Studente>(studenti.values());
 	}
 	
 	// cancella uno studente
-	public boolean cancella(String matricola) {
-		if (mappa.containsKey(matricola)) {
-			mappa.remove(matricola);
+	public boolean cancellaStudente(int matricola) {
+		if (studenti.containsKey(matricola)) {
+			studenti.remove(matricola);
 			return true;
 		}
 		return false;
 	}
 	
 	// modifica indirizzo studente
-	public Studente modificaIndirizzo(String matricola, String nuovoIndirizzo) {
-		Studente studente = mappa.get(matricola);
-		studente.setIndirizzo(nuovoIndirizzo);
+	public Studente modificaIndirizzo(int matricola, String indirizzoNuovo) {
+		Studente studente = studenti.get(matricola);
+		studente.setIndirizzo(indirizzoNuovo);
 		return studente;
 	}
-	
 }

@@ -2,75 +2,69 @@ package com.spring.universita.services;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.spring.universita.dao.StudentiDAO;
-import com.spring.universita.dto.CognomeAnnoImmatricolazioneDTO;
-import com.spring.universita.dto.CognomeAnnoNascitaDTO;
 import com.spring.universita.dto.StudenteDTO;
+import com.spring.universita.entity.CognomeAnnoIscrizioneDTO;
+import com.spring.universita.entity.CognomeAnnoNascitaDTO;
 import com.spring.universita.entity.Studente;
 import com.spring.universita.mapper.Mapper;
 
 public class StudentiServices {
+	
 	private StudentiDAO dao = new StudentiDAO();
 	
 	public boolean inserisci(StudenteDTO dto) {
-		// qua avviene la conversione StudenteDTO -> Studente
-		
-		Studente studente = Mapper.daStudenteDTOAStudente(dto);
+		Studente studente = Mapper.daStudenteDTOaStudente(dto);
 		return dao.inserisciStudente(studente);
 	}
-	public StudenteDTO cercaPerMatricola(String matricola) {
+	
+	public StudenteDTO cercaPerId(int matricola ) {
 		Studente studente = dao.cercaPerMatricola(matricola);
-		if (studente != null) {
-			return Mapper.daStudenteAStudenteDTO(studente);
-		} else {
-			return null; // evitiamo nullPointer
+		if (studente != null ) {
+			return Mapper.daStudenteaStudenteDTO(studente);
 		}
+		return null; 
 	}
 	
 	public List<StudenteDTO> visualizzaStudenti(){
 		return dao.visualizzaStudenti()
 				.stream()
-				.map(s -> Mapper.daStudenteAStudenteDTO(s)) 
-				.collect(Collectors.toList());
+				.map(s -> Mapper.daStudenteaStudenteDTO(s))
+				.toList();
 	}
 	
-	public boolean eliminaStudente(String matricola) {
-		return dao.cancella(matricola);
+	public boolean cancella(int matricola ) {
+		return dao.cancellaStudente(matricola);
 	}
 	
-	public StudenteDTO modificaIndirizzo(String matricola, String indirizzo) {
-		Studente studente = dao.modificaIndirizzo(matricola, indirizzo);
-		return Mapper.daStudenteAStudenteDTO(studente);
+	public StudenteDTO modificaIndirizzo(int matricola, String nuovoIndirizzo) {
+		Studente studente = dao.modificaIndirizzo(matricola, nuovoIndirizzo);
+		return Mapper.daStudenteaStudenteDTO(studente);
 	}
 	
-	// funzionalita avanzate
+	//metodi avanzati
 	
-	public List<String> visualizzaElencoNomi(){
+	public List<String> visualizzaNomiStudenti(){
 		return dao.visualizzaStudenti()
 				.stream()
-				.map(s -> s.getNome())
-				.collect(Collectors.toList());
+				.map( s -> s.getNome())
+				.toList();
 	}
 	
-	public CognomeAnnoNascitaDTO cognomeAnnoNascitaStudentePiuGiovane() {
+	public CognomeAnnoNascitaDTO cognomeAnnoNascitaPiuGiovane() {
 		return dao.visualizzaStudenti()
 				.stream()
-				.map(s -> new CognomeAnnoNascitaDTO(s.getCognome(), s.getAnnoNascita()))
-				.max(Comparator.comparingInt(dto -> dto.getAnnoNascita())) // studente con anno di nascita maggiore
+				.map( s -> new CognomeAnnoNascitaDTO(s.getCognome(), s.getAnnoNascita())) // trasformo ogni elemento s in un dto 
+				.max(Comparator.comparingInt(dto -> dto.getAnnoNascita())) // interfaccia comparator dove estrae per annoNascita max 
+				.orElse(null); // se dao.visualizza studenti = null ritorna null
+	}
+	
+	public CognomeAnnoIscrizioneDTO cognomeIscrizioneIscrittoPiuTempo() {
+		return dao.visualizzaStudenti()
+				.stream()
+				.map( s -> new CognomeAnnoIscrizioneDTO(s.getCognome(), s.getAnnoImmatricolazione()))
+				.min(Comparator.comparingInt(dto -> dto.getAnnoIscrizione()))
 				.orElse(null);
 	}
-	
-	public CognomeAnnoImmatricolazioneDTO cognomeAnnoImmatricolazionePiuVecchio() {
-		return dao.visualizzaStudenti()
-				.stream()
-				.map(s -> new CognomeAnnoImmatricolazioneDTO(s.getCognome(), s.getAnnoImmatricolazione()))
-				.min(Comparator.comparingInt(dto -> dto.getAnnoImmatricolazione())) // anno imm minore
-				.orElse(null); // se la lista e vuota ritorno null
-				
-	}
-	
-	
-	
 }
